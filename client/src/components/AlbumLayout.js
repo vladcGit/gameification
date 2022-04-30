@@ -52,11 +52,11 @@ export default function Album(props) {
             ></Stack>
           </Container>
         </Box>
-        <Container sx={{ py: 8 }} maxWidth='md'>
-          {/* End hero unit */}
-          <Grid container spacing={4}>
-            {cards &&
-              cards.map((card) => (
+        {cards && (
+          <Container sx={{ py: 8 }} maxWidth='md'>
+            {/* End hero unit */}
+            <Grid container spacing={4}>
+              {cards.map((card) => (
                 <Grid item key={card.id} xs={12} sm={6} md={4}>
                   <Card
                     sx={{
@@ -82,8 +82,9 @@ export default function Album(props) {
                   </Card>
                 </Grid>
               ))}
-          </Grid>
-        </Container>
+            </Grid>
+          </Container>
+        )}
       </main>
     </>
   );

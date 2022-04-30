@@ -9,6 +9,7 @@ import HomePage from './HomePage';
 import Domenii from './Domenii';
 import Domeniu from './Domeniu';
 import Materie from './Materie';
+import CursNou from './CursNou';
 
 export default function App() {
   const [mode, setMode] = useState('light');
@@ -58,6 +59,7 @@ export default function App() {
             <Route exact path='/domeniu' element={<Domenii />} />
             <Route exact path='/domeniu/:id' element={<Domeniu />} />
             <Route exact path='/materie/:id' element={<Materie />} />
+            <Route exact path='/curs/nou' element={<CursNou />} />
           </Routes>
         </BrowserRouter>
       </ThemeProvider>
