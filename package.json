@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-	  "startDev": "nodemon index.js"
+    "startDev": "nodemon index.js"
   },
   "keywords": [],
   "author": "",
@@ -16,6 +16,7 @@
     "dotenv": "^16.0.0",
     "express": "^4.18.1",
     "jsonwebtoken": "^8.5.1",
+    "multer": "^1.4.4",
     "pg": "^8.7.3",
     "sequelize": "^6.19.0",
     "sqlite3": "^5.0.6"
