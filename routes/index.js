@@ -4,5 +4,7 @@ router.use('/user', require('./utilizatori'));
 router.use('/domeniu', require('./domeniu'));
 router.use('/materie', require('./materie'));
 router.use('/curs', require('./curs'));
+router.use('/lectie', require('./lectie'));
+router.use('/fisier', require('./fisier'));
 
 module.exports = router;

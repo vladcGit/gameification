@@ -2,21 +2,14 @@ import { createContext } from 'react';
 const ColorModeContext = createContext({ toggleColorMode: () => {} });
 
 function formatDate(date) {
-  function padTo2Digits(num) {
-    return num.toString().padStart(2, '0');
-  }
-  const dataCalendaristica = [
-    padTo2Digits(date.getDate()),
-    padTo2Digits(date.getMonth() + 1),
-    date.getFullYear(),
-  ].join('/');
+  const yyyy = date.getFullYear();
+  let mm = date.getMonth() + 1;
+  let dd = date.getDate();
 
-  const ora = [
-    padTo2Digits(date.getHours()),
-    padTo2Digits(date.getMinutes()),
-  ].join(':');
+  if (dd < 10) dd = '0' + dd;
+  if (mm < 10) mm = '0' + mm;
 
-  return `${dataCalendaristica}, ${ora}`;
+  return dd + '-' + mm + '-' + yyyy;
 }
 
 export { ColorModeContext, formatDate };

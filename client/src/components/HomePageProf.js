@@ -27,6 +27,7 @@ export default function HomePageProf({ user }) {
         const resCurs = await axios.get(`/api/curs/user`, {
           headers: { Authorization: localStorage.getItem('token') },
         });
+        if (!resCurs.data) return;
 
         const resMaterii = await axios.get(`/api/materie/all`);
         for (let curs of resCurs.data) {
@@ -37,10 +38,7 @@ export default function HomePageProf({ user }) {
         console.log(resCurs.data);
         setCursuri(resCurs.data);
       } catch (e) {
-        const err = e.response;
-        if (err.status === 500) {
-          alert('A aparut o eroare');
-        }
+        console.log(e);
       }
     };
     fetchData();
@@ -91,7 +89,7 @@ export default function HomePageProf({ user }) {
               cursuri.map((curs) => {
                 return (
                   <ListItem key={curs.id}>
-                    <ListItemButton component={Link} to={`/`}>
+                    <ListItemButton component={Link} to={`/curs/${curs.id}`}>
                       <ListItemAvatar>
                         <Avatar>
                           <ComputerIcon />

@@ -26,7 +26,7 @@ export default function Domenii() {
     fetchData();
   }, []);
 
-  const handler = (id) => {
+  const handler = ({ id }) => {
     navigate(`/domeniu/${id}`);
   };
 

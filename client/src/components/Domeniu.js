@@ -32,7 +32,7 @@ export default function Domeniu() {
     fetchData();
   }, [id]);
 
-  const buttonHandler = (id) => {
+  const buttonHandler = ({ id }) => {
     navigate(`/materie/${id}`);
   };
   return (

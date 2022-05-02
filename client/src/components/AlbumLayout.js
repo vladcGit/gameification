@@ -12,7 +12,8 @@ import Container from '@mui/material/Container';
 import Appbar from './Appbar';
 
 export default function Album(props) {
-  const { titlu, subtitlu, cards, buttonHandler } = props;
+  const { titlu, subtitlu, cards, buttonHandler, text, SecondaryButton } =
+    props;
   return (
     <>
       <CssBaseline />
@@ -44,6 +45,17 @@ export default function Album(props) {
             >
               {subtitlu}
             </Typography>
+            {text && (
+              <Typography
+                variant='h3'
+                align='center'
+                color='text.primary'
+                multiline='true'
+                mt='70px'
+              >
+                {text}
+              </Typography>
+            )}
             <Stack
               sx={{ pt: 4 }}
               direction='row'
@@ -72,12 +84,18 @@ export default function Album(props) {
                       <Typography>{card.subtitlu}</Typography>
                     </CardContent>
                     <CardActions>
-                      <Button
-                        size='small'
-                        onClick={() => buttonHandler(card.id)}
-                      >
+                      <Button size='small' onClick={() => buttonHandler(card)}>
                         Vezi
                       </Button>
+                      {SecondaryButton && (
+                        <Button
+                          size='small'
+                          color='secondary'
+                          onClick={() => SecondaryButton.handler(card)}
+                        >
+                          {SecondaryButton.text}
+                        </Button>
+                      )}
                     </CardActions>
                   </Card>
                 </Grid>
