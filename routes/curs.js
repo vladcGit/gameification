@@ -60,4 +60,15 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+router.put('/:id', auth, async (req, res) => {
+  try {
+    const curs = await Curs.findByPk(req.params.id);
+    await curs.update(req.body);
+    res.status(200).json({ mesaj: 'ok' });
+  } catch (e) {
+    console.log(e);
+    res.status(500).json(e);
+  }
+});
+
 module.exports = router;

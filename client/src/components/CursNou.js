@@ -2,6 +2,7 @@ import {
   Autocomplete,
   Box,
   Button,
+  CssBaseline,
   Grid,
   TextField,
   Typography,
@@ -74,6 +75,7 @@ export default function CursNou() {
   return (
     <>
       <Appbar />
+      <CssBaseline />
       <Box
         sx={{
           bgcolor: 'background.paper',

@@ -19,9 +19,14 @@ export default function Curs() {
   const [curs, setCurs] = React.useState(null);
   const [user, setUser] = React.useState(null);
   const [open, setOpen] = React.useState(false);
+  const [titluModal, setTitluModal] = React.useState('');
+  const [textModal, setTextModal] = React.useState('');
+  const [buttonTextModal, setButtonTextModal] = React.useState('');
   const [nume, setNume] = React.useState('');
   const [descriere, setDescriere] = React.useState('');
   const [text, setText] = React.useState('');
+
+  const [idLectieEditata, setIdLectieEditata] = React.useState(-1);
 
   const { id } = useParams();
   const navigate = useNavigate();
@@ -69,13 +74,42 @@ export default function Curs() {
     fetchCursCallback();
   }, [fetchCursCallback]);
 
-  const creazaLectie = async () => {
+  const creeazaLectie = async () => {
     const token = localStorage.getItem('token');
     if (token) {
       try {
         const res = await axios.post(
           `/api/lectie/nou`,
           { nume, descriere, text, id_curs: id },
+          {
+            headers: {
+              Authorization: token,
+            },
+          }
+        );
+
+        console.log(res.data);
+        setOpen(false);
+        setNume('');
+        setDescriere('');
+        setText('');
+        fetchCursCallback();
+      } catch (e) {
+        const err = e.response;
+        if (err.status === 500) {
+          alert('A aparut o eroare');
+        }
+      }
+    }
+  };
+
+  const editeazaLectie = async (id) => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      try {
+        const res = await axios.put(
+          `/api/lectie/${id}`,
+          { nume, descriere, text },
           {
             headers: {
               Authorization: token,
@@ -178,7 +212,17 @@ export default function Curs() {
                 width: '100%',
               }}
             >
-              <Button variant='contained' onClick={() => setOpen(true)}>
+              <Button
+                variant='contained'
+                onClick={() => {
+                  setTitluModal('Creeaza o lectie noua');
+                  setTextModal(
+                    'Introdu datele si apoi apasa pe buton. (pentru campul text se pot introduce mai multe linii)'
+                  );
+                  setButtonTextModal('Creeaza');
+                  setOpen(true);
+                }}
+              >
                 Creeaza o lectie
               </Button>
             </div>
@@ -195,11 +239,10 @@ export default function Curs() {
           >
             <Box sx={modalStyle}>
               <Typography id='modal-modal-title' variant='h6' component='h2'>
-                Creeaza o lectie noua
+                {titluModal}
               </Typography>
               <Typography id='modal-modal-description' sx={{ mt: 2 }}>
-                Introdu datele si apoi apasa pe buton. (pentru campul text se
-                pot introduce mai multe linii)
+                {textModal}
               </Typography>
               <TextField
                 placeholder='Nume lectie'
@@ -224,9 +267,13 @@ export default function Curs() {
                 variant='contained'
                 color='primary'
                 sx={{ margin: '10px' }}
-                onClick={creazaLectie}
+                onClick={
+                  buttonTextModal === 'Creeaza'
+                    ? creeazaLectie
+                    : () => editeazaLectie(idLectieEditata)
+                }
               >
-                Creeaza
+                {buttonTextModal}
               </Button>
             </Box>
           </Modal>
@@ -267,7 +314,22 @@ export default function Curs() {
                       </Button>
                       {user?.eProfesor && (
                         <>
-                          <Button size='small' onClick={() => {}}>
+                          <Button
+                            size='small'
+                            onClick={() => {
+                              setTitluModal('Editeaza lectia');
+                              setTextModal(
+                                'Introdu datele si apoi apasa pe buton. (pentru campul text se pot introduce mai multe linii)'
+                              );
+                              setButtonTextModal('Editeaza');
+                              setIdLectieEditata(lectie.id);
+
+                              setNume(lectie.nume);
+                              setDescriere(lectie.descriere);
+                              setText(lectie.text);
+                              setOpen(true);
+                            }}
+                          >
                             Editeaza
                           </Button>
                           <Button

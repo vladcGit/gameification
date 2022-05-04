@@ -14,6 +14,17 @@ router.post('/nou', auth, async (req, res) => {
   }
 });
 
+router.put('/:id', auth, async (req, res) => {
+  try {
+    const lectie = await Lectie.findByPk(req.params.id);
+    await lectie.update(req.body);
+    res.status(200).json({ mesaj: 'ok' });
+  } catch (e) {
+    console.log(e);
+    res.status(500).json(e);
+  }
+});
+
 router.delete('/:id', auth, async (req, res) => {
   try {
     const lectie = await Lectie.findByPk(req.params.id);

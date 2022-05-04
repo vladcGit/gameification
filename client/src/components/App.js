@@ -13,6 +13,7 @@ import CursNou from './CursNou';
 import Curs from './Curs';
 import Page404 from './Page404';
 import Lectie from './Lectie';
+import CursEdit from './CursEdit';
 
 export default function App() {
   const [mode, setMode] = useState('light');
@@ -63,6 +64,7 @@ export default function App() {
             <Route exact path='/domeniu/:id' element={<Domeniu />} />
             <Route exact path='/materie/:id' element={<Materie />} />
             <Route exact path='/curs/nou' element={<CursNou />} />
+            <Route exact path='/curs/edit/:id' element={<CursEdit />} />
             <Route exact path='/curs/:id' element={<Curs />} />
             <Route
               exact
