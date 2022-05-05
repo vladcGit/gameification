@@ -13,10 +13,6 @@ const Varianta = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    imagine: {
-      type: DataTypes.TEXT,
-      allowNull: true,
-    },
   },
   { tableName: 'Variante' }
 );

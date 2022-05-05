@@ -28,6 +28,8 @@ export default function Curs() {
 
   const [idLectieEditata, setIdLectieEditata] = React.useState(-1);
 
+  const [intrebariSiExamene, setIntrebariSiExamene] = React.useState([]);
+
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -35,6 +37,10 @@ export default function Curs() {
     try {
       const res = await axios.get(`/api/curs/${id}`);
       setCurs(res.data);
+
+      const arr = res.data.Lecties.concat(res.data.Examenes);
+      arr.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+      console.log(arr);
     } catch (e) {
       const err = e.response;
       if (err.status === 500) {
@@ -208,7 +214,8 @@ export default function Curs() {
             <div
               style={{
                 display: 'flex',
-                justifyContent: 'center',
+                flexDirection: 'column',
+                alignItems: 'center',
                 width: '100%',
               }}
             >
@@ -224,6 +231,13 @@ export default function Curs() {
                 }}
               >
                 Creeaza o lectie
+              </Button>
+              <Button
+                variant='contained'
+                sx={{ margin: '20px' }}
+                onClick={() => navigate(`/examen/nou/${id}`)}
+              >
+                Creeaza un test
               </Button>
             </div>
           </Container>
@@ -283,6 +297,7 @@ export default function Curs() {
         {curs?.Lecties && (
           <Container sx={{ py: 8 }} maxWidth='sm'>
             <Grid container spacing={4}>
+              {/* lectii */}
               {curs.Lecties.map((lectie) => (
                 <Grid item key={lectie.id} xs={12}>
                   <Card
@@ -345,6 +360,7 @@ export default function Curs() {
                   </Card>
                 </Grid>
               ))}
+              {/*end lectii */}
             </Grid>
           </Container>
         )}

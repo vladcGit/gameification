@@ -14,10 +14,6 @@ const Intrebare = sequelize.define(
       type: DataTypes.STRING,
       allowNull: true,
     },
-    imagine: {
-      type: DataTypes.TEXT,
-      allowNull: true,
-    },
     raspuns_corect: {
       type: DataTypes.CHAR,
       allowNull: false,

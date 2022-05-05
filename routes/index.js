@@ -6,5 +6,6 @@ router.use('/materie', require('./materie'));
 router.use('/curs', require('./curs'));
 router.use('/lectie', require('./lectie'));
 router.use('/fisier', require('./fisier'));
+router.use('/examen', require('./examen'));
 
 module.exports = router;
