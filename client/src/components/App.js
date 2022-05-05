@@ -15,6 +15,9 @@ import Page404 from './Page404';
 import Lectie from './Lectie';
 import CursEdit from './CursEdit';
 import ExamenNou from './ExamenNou';
+import ExamenEdit from './ExamenEdit';
+import Examen from './Examen';
+import ClasamentExamen from './componenteExamen/ClasamentExamen';
 
 export default function App() {
   const [mode, setMode] = useState('light');
@@ -67,7 +70,14 @@ export default function App() {
             <Route exact path='/curs/nou' element={<CursNou />} />
             <Route exact path='/curs/edit/:id' element={<CursEdit />} />
             <Route exact path='/curs/:id' element={<Curs />} />
+            <Route exact path='/examen/:id' element={<Examen />} />
             <Route exact path='/examen/nou/:id' element={<ExamenNou />} />
+            <Route exact path='/examen/edit/:id' element={<ExamenEdit />} />
+            <Route
+              exact
+              path='/examen/:id/clasament'
+              element={<ClasamentExamen />}
+            />
             <Route
               exact
               path='/curs/:id/lectie/:idLectie'

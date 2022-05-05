@@ -12,4 +12,11 @@ function formatDate(date) {
   return dd + '-' + mm + '-' + yyyy;
 }
 
-export { ColorModeContext, formatDate };
+function formatDateWithHour(date) {
+  const hh = date.getHours();
+  let mm = date.getMinutes();
+  if (mm === 0) mm = '00';
+  return `${formatDate(date)} ${hh}:${mm}`;
+}
+
+export { ColorModeContext, formatDate, formatDateWithHour };

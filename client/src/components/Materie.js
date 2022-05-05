@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Album from './AlbumLayout';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 export default function Materie() {
   const [cursuri, setCursuri] = useState([]);
   const [materie, setMaterie] = useState([]);
   const { id } = useParams();
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -29,6 +30,11 @@ export default function Materie() {
     fetchData();
   }, [id]);
   return (
-    <Album titlu={materie.nume} subtitlu={materie.descriere} cards={cursuri} />
+    <Album
+      titlu={materie.nume}
+      subtitlu={materie.descriere}
+      cards={cursuri}
+      buttonHandler={({ id }) => navigate(`/curs/${id}`)}
+    />
   );
 }

@@ -15,7 +15,7 @@ import React, { useState } from 'react';
 import Appbar from './Appbar';
 import { useNavigate, useParams } from 'react-router-dom';
 
-export default function ExamenNou() {
+export default function ExamenEdit() {
   const [nume, setNume] = useState('');
   const [descriere, setDescriere] = useState('');
   const [dataIncepere, setDataIncepere] = useState(new Date());
@@ -24,6 +24,39 @@ export default function ExamenNou() {
 
   const { id } = useParams();
   const navigate = useNavigate();
+
+  React.useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await axios.get(`/api/examen/${id}`);
+        const { nume, descriere, data_incepere, durata, Intrebares } = res.data;
+        console.log(res.data);
+        setNume(nume);
+        setDescriere(descriere);
+        setDataIncepere(data_incepere);
+        setDurata(durata);
+        const intrebari = [];
+        for (let intrebare of Intrebares) {
+          const indexRaspunsCorect =
+            intrebare.raspuns_corect.charCodeAt(0) - 'a'.charCodeAt(0);
+          const variante = intrebare.Varianta.map((i) => ({ text: i.text }));
+          intrebari.push({
+            text: intrebare.text,
+            indexRaspunsCorect,
+            variante,
+          });
+        }
+        setIntrebari(intrebari);
+        console.log(intrebari);
+      } catch (e) {
+        const err = e.response;
+        if (err.status === 500) {
+          alert('A aparut o eroare');
+        }
+      }
+    };
+    fetchData();
+  }, [id]);
 
   const addIntrebare = () => {
     const copie = [...intrebari];
@@ -37,21 +70,20 @@ export default function ExamenNou() {
     setIntrebari(copie);
   };
 
-  const handleCreateExamen = async () => {
+  const handleEditExamen = async () => {
     try {
-      await axios.post(
-        `/api/examen`,
+      await axios.put(
+        `/api/examen/${id}`,
         {
           nume,
           descriere,
           durata,
-          id_curs: id,
           data_incepere: dataIncepere,
           intrebari,
         },
         { headers: { Authorization: localStorage.getItem('token') } }
       );
-      navigate(`/curs/${id}`);
+      navigate(-1);
     } catch (e) {
       const err = e.response;
       console.log(err);
@@ -172,9 +204,9 @@ export default function ExamenNou() {
           <Button variant='contained' color='secondary' onClick={addIntrebare}>
             Adauga intrebare
           </Button>
-          <Grid item xs={10} margin='10px'>
-            <Button variant='contained' onClick={handleCreateExamen}>
-              Creeaza examen
+          <Grid item xs={10} marginTop='10px'>
+            <Button variant='contained' onClick={handleEditExamen}>
+              Salveaza modificarile
             </Button>
           </Grid>
         </Grid>

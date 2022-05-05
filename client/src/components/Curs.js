@@ -13,7 +13,8 @@ import Container from '@mui/material/Container';
 import Appbar from './Appbar';
 import axios from 'axios';
 import { Modal, TextField } from '@mui/material';
-import { formatDate } from '../util';
+import { formatDate, formatDateWithHour } from '../util';
+import { useTheme } from '@emotion/react';
 
 export default function Curs() {
   const [curs, setCurs] = React.useState(null);
@@ -32,6 +33,7 @@ export default function Curs() {
 
   const { id } = useParams();
   const navigate = useNavigate();
+  const theme = useTheme();
 
   const fetchCurs = async (id) => {
     try {
@@ -40,8 +42,9 @@ export default function Curs() {
 
       const arr = res.data.Lecties.concat(res.data.Examenes);
       arr.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
-      console.log(arr);
+      setIntrebariSiExamene(arr);
     } catch (e) {
+      console.log(e);
       const err = e.response;
       if (err.status === 500) {
         alert('A aparut o eroare');
@@ -156,6 +159,25 @@ export default function Curs() {
     }
   };
 
+  const stergeExamen = async (id) => {
+    try {
+      const token = localStorage.getItem('token');
+      console.log(token);
+      if (!token) return;
+
+      if (!window.confirm('Sigur vrei sa stergi acest examen?')) return;
+      await axios.delete(`/api/examen/${id}`, {
+        headers: { Authorization: token },
+      });
+      fetchCursCallback();
+    } catch (e) {
+      const err = e.response;
+      if (err.status === 500) {
+        alert('A aparut o eroare');
+      }
+    }
+  };
+
   const modalStyle = {
     position: 'absolute',
     top: '50%',
@@ -169,6 +191,123 @@ export default function Curs() {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+  };
+
+  const Lectie = ({ lectie }) => {
+    return (
+      <Grid item xs={12}>
+        <Card
+          sx={{
+            height: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            textAlign: 'center',
+          }}
+        >
+          <CardContent sx={{ flexGrow: 1 }}>
+            <Typography gutterBottom>
+              {formatDate(new Date(lectie.createdAt))}
+            </Typography>
+            <Typography gutterBottom variant='h5' component='h2'>
+              {lectie.nume}
+            </Typography>
+            <Typography>{lectie.descriere}</Typography>
+          </CardContent>
+          <CardActions>
+            <Button
+              size='small'
+              onClick={() => navigate(`/curs/${id}/lectie/${lectie.id}`)}
+            >
+              Vezi
+            </Button>
+            {user?.eProfesor && (
+              <>
+                <Button
+                  size='small'
+                  onClick={() => {
+                    setTitluModal('Editeaza lectia');
+                    setTextModal(
+                      'Introdu datele si apoi apasa pe buton. (pentru campul text se pot introduce mai multe linii)'
+                    );
+                    setButtonTextModal('Editeaza');
+                    setIdLectieEditata(lectie.id);
+
+                    setNume(lectie.nume);
+                    setDescriere(lectie.descriere);
+                    setText(lectie.text);
+                    setOpen(true);
+                  }}
+                >
+                  Editeaza
+                </Button>
+                <Button
+                  size='small'
+                  color='secondary'
+                  onClick={() => stergeLectie(lectie.id)}
+                >
+                  Sterge
+                </Button>
+              </>
+            )}
+          </CardActions>
+        </Card>
+      </Grid>
+    );
+  };
+
+  const Examen = ({ examen }) => {
+    return (
+      <Grid item xs={12}>
+        <Card
+          sx={{
+            height: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            textAlign: 'center',
+            backgroundColor: theme.palette.error.dark,
+          }}
+        >
+          <CardContent sx={{ flexGrow: 1 }}>
+            <Typography gutterBottom>
+              {formatDateWithHour(new Date(examen.data_incepere))}
+            </Typography>
+            <Typography gutterBottom variant='h5' component='h2'>
+              {examen.nume}
+            </Typography>
+            <Typography>{examen.descriere}</Typography>
+          </CardContent>
+          <CardActions>
+            {!user?.eProfesor && (
+              <Button
+                size='small'
+                onClick={() => navigate(`/examen/${examen.id}`)}
+              >
+                Vezi
+              </Button>
+            )}
+            {user?.eProfesor && (
+              <>
+                <Button
+                  size='small'
+                  onClick={() => navigate(`/examen/edit/${examen.id}`)}
+                >
+                  Editeaza
+                </Button>
+                <Button
+                  size='small'
+                  color='secondary'
+                  onClick={() => stergeExamen(examen.id)}
+                >
+                  Sterge
+                </Button>
+              </>
+            )}
+          </CardActions>
+        </Card>
+      </Grid>
+    );
   };
 
   return (
@@ -294,73 +433,16 @@ export default function Curs() {
         </div>
         {/*End Modal*/}
 
-        {curs?.Lecties && (
+        {intrebariSiExamene && (
           <Container sx={{ py: 8 }} maxWidth='sm'>
             <Grid container spacing={4}>
-              {/* lectii */}
-              {curs.Lecties.map((lectie) => (
-                <Grid item key={lectie.id} xs={12}>
-                  <Card
-                    sx={{
-                      height: '100%',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: 'center',
-                      textAlign: 'center',
-                    }}
-                  >
-                    <CardContent sx={{ flexGrow: 1 }}>
-                      <Typography gutterBottom>
-                        {formatDate(new Date(lectie.createdAt))}
-                      </Typography>
-                      <Typography gutterBottom variant='h5' component='h2'>
-                        {lectie.nume}
-                      </Typography>
-                      <Typography>{lectie.descriere}</Typography>
-                    </CardContent>
-                    <CardActions>
-                      <Button
-                        size='small'
-                        onClick={() =>
-                          navigate(`/curs/${id}/lectie/${lectie.id}`)
-                        }
-                      >
-                        Vezi
-                      </Button>
-                      {user?.eProfesor && (
-                        <>
-                          <Button
-                            size='small'
-                            onClick={() => {
-                              setTitluModal('Editeaza lectia');
-                              setTextModal(
-                                'Introdu datele si apoi apasa pe buton. (pentru campul text se pot introduce mai multe linii)'
-                              );
-                              setButtonTextModal('Editeaza');
-                              setIdLectieEditata(lectie.id);
-
-                              setNume(lectie.nume);
-                              setDescriere(lectie.descriere);
-                              setText(lectie.text);
-                              setOpen(true);
-                            }}
-                          >
-                            Editeaza
-                          </Button>
-                          <Button
-                            size='small'
-                            color='secondary'
-                            onClick={() => stergeLectie(lectie.id)}
-                          >
-                            Sterge
-                          </Button>
-                        </>
-                      )}
-                    </CardActions>
-                  </Card>
-                </Grid>
-              ))}
-              {/*end lectii */}
+              {intrebariSiExamene.map((entitate) =>
+                entitate.Fisieres ? (
+                  <Lectie key={`lectie ${entitate.id}`} lectie={entitate} />
+                ) : (
+                  <Examen key={`examen ${entitate.id}`} examen={entitate} />
+                )
+              )}
             </Grid>
           </Container>
         )}
