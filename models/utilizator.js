@@ -2,6 +2,7 @@ const sequelize = require('./sequelize');
 const { DataTypes } = require('sequelize');
 const ExamenStudent = require('./examen_student');
 const Curs = require('./curs');
+const Experienta = require('./experienta');
 
 const Utilizator = sequelize.define(
   'Utilizator',
@@ -39,6 +40,10 @@ Utilizator.hasMany(ExamenStudent, {
 });
 Utilizator.hasMany(Curs, {
   foreignKey: 'id_creator',
+  onDelete: 'CASCADE',
+});
+Utilizator.hasMany(Experienta, {
+  foreignKey: 'id_student',
   onDelete: 'CASCADE',
 });
 

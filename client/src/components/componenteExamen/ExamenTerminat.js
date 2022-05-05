@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 
 export default function ExamenTerminat({ examen, punctaj }) {
   const [lista, setLista] = React.useState([]);
+  const [xp, setXp] = React.useState(0);
 
   const navigate = useNavigate();
 
@@ -27,7 +28,8 @@ export default function ExamenTerminat({ examen, punctaj }) {
       const res = await axios.get(`/api/examen/${examen.id}/raspunsuri`, {
         headers: { Authorization: localStorage.getItem('token') },
       });
-      setLista(res.data);
+      setLista(res.data.lista);
+      setXp(res.data.xp);
       console.log(res.data);
     };
     fetchDate();
@@ -52,6 +54,9 @@ export default function ExamenTerminat({ examen, punctaj }) {
           highlightColor={secondaryColor}
           predicatHighlight={(row) => row.trimis !== row.corect}
         />
+      </Grid>
+      <Grid item xs={10} mt='20px'>
+        {`Ai obtinut ${Math.round(xp)} puncte de experienta pentru acest quiz`}
       </Grid>
     </>
   );

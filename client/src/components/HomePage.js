@@ -7,7 +7,7 @@ import { CircularProgress } from '@mui/material';
 import { Box } from '@mui/system';
 
 export default function HomePage() {
-  const [user, setUser] = React.useState({});
+  const [user, setUser] = React.useState(null);
   const [loading, setLoading] = React.useState(true);
 
   React.useEffect(() => {
@@ -42,15 +42,19 @@ export default function HomePage() {
           <CircularProgress />
         </Box>
       )}
-      {!loading && localStorage.getItem('token') && user && !user.eProfesor && (
-        <HomePageStud user={user} />
-      )}
-      {!loading && localStorage.getItem('token') && user && user.eProfesor && (
-        <HomePageProf user={user} />
-      )}
-      {(!localStorage.getItem('token') || !user) && !loading && (
-        <HomePageNormal />
-      )}
+      {
+        // eslint-disable-next-line
+        !loading && user && user.eProfesor == false && (
+          <HomePageStud user={user} />
+        )
+      }
+      {
+        // eslint-disable-next-line
+        !loading && user && user.eProfesor == true && (
+          <HomePageProf user={user} />
+        )
+      }
+      {!user && !loading && <HomePageNormal />}
     </>
   );
 }

@@ -126,7 +126,7 @@ export default function CursNou() {
                   if (matFilter) setMaterie(matFilter);
                 }}
                 renderInput={(params) => (
-                  <TextField {...params} label='Domeniu' />
+                  <TextField {...params} label='Materie' />
                 )}
                 sx={{ width: 300 }}
               />

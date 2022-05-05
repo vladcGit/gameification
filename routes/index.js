@@ -7,5 +7,6 @@ router.use('/curs', require('./curs'));
 router.use('/lectie', require('./lectie'));
 router.use('/fisier', require('./fisier'));
 router.use('/examen', require('./examen'));
+router.use('/experienta', require('./experienta'));
 
 module.exports = router;

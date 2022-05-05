@@ -279,31 +279,37 @@ export default function Curs() {
             <Typography>{examen.descriere}</Typography>
           </CardContent>
           <CardActions>
-            {!user?.eProfesor && (
-              <Button
-                size='small'
-                onClick={() => navigate(`/examen/${examen.id}`)}
-              >
-                Vezi
-              </Button>
-            )}
-            {user?.eProfesor && (
-              <>
+            {
+              // eslint-disable-next-line
+              user?.eProfesor == false && (
                 <Button
                   size='small'
-                  onClick={() => navigate(`/examen/edit/${examen.id}`)}
+                  onClick={() => navigate(`/examen/${examen.id}`)}
                 >
-                  Editeaza
+                  Vezi
                 </Button>
-                <Button
-                  size='small'
-                  color='secondary'
-                  onClick={() => stergeExamen(examen.id)}
-                >
-                  Sterge
-                </Button>
-              </>
-            )}
+              )
+            }
+            {
+              // eslint-disable-next-line
+              user?.eProfesor == true && (
+                <>
+                  <Button
+                    size='small'
+                    onClick={() => navigate(`/examen/edit/${examen.id}`)}
+                  >
+                    Editeaza
+                  </Button>
+                  <Button
+                    size='small'
+                    color='secondary'
+                    onClick={() => stergeExamen(examen.id)}
+                  >
+                    Sterge
+                  </Button>
+                </>
+              )
+            }
           </CardActions>
         </Card>
       </Grid>

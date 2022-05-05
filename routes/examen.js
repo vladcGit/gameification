@@ -1,7 +1,11 @@
 const auth = require('../middleware/auth');
+const Curs = require('../models/curs');
+const Domeniu = require('../models/domeniu');
 const Examen = require('../models/examen');
 const ExamenStudent = require('../models/examen_student');
+const Experienta = require('../models/experienta');
 const Intrebare = require('../models/intrebare');
+const Materie = require('../models/materie');
 const Varianta = require('../models/varianta');
 
 const router = require('express').Router();
@@ -133,6 +137,29 @@ router.post('/:id/termina', auth, async (req, res) => {
         raspunsuri,
       });
     } else await instanta.update({ punctaj: numarCorecte, raspunsuri });
+
+    //actualizare nivel
+    const curs = await Curs.findByPk(examen.getDataValue('id_curs'));
+    const materie = await Materie.findByPk(curs.getDataValue('id_materie'));
+    const domeniu = await Domeniu.findByPk(materie.getDataValue('id_domeniu'));
+
+    const [experienta, created] = await Experienta.findOrCreate({
+      where: {
+        id_student: req.user.id,
+        id_domeniu: domeniu.getDataValue('id'),
+      },
+    });
+
+    const xp = (numarCorecte / intrebari.length) * 100;
+    let rank = experienta.getDataValue('rank');
+    const xpVechi = experienta.getDataValue('xp');
+    const xpActual = xp + xpVechi;
+
+    if (rank === 'Incepator' && xpActual >= 200) rank = 'Entuziast';
+    else if (rank === 'Entuziast' && xpActual >= 500) rank = 'Maestru';
+
+    await experienta.update({ xp: xpActual, rank });
+
     return res.status(200).json({ punctaj: numarCorecte, raspunsuri });
   } catch (e) {
     res.status(500).json(e);
@@ -167,7 +194,12 @@ router.get('/:id/raspunsuri', auth, async (req, res) => {
       });
     }
 
-    return res.status(200).json(lista);
+    return res
+      .status(200)
+      .json({
+        lista,
+        xp: (instanta.getDataValue('punctaj') / intrebari.length) * 100,
+      });
   } catch (e) {
     console.log(e);
     res.status(500).json(e);

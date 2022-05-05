@@ -11,7 +11,7 @@ export default function HomePageStud({ user }) {
         titlu={`Bine ai venit, ${user.nume}`}
         subtitlu={'Incepe sa vezi oferta noastra apasand pe butonul de mai jos'}
       />
-      <div>
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
         <Button
           variant='contained'
           color='primary'

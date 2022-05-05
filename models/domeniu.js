@@ -1,6 +1,7 @@
 const sequelize = require('./sequelize');
 const { DataTypes } = require('sequelize');
 const Materie = require('./materie');
+const Experienta = require('./experienta');
 
 const Domeniu = sequelize.define(
   'Domeniu',
@@ -22,5 +23,6 @@ const Domeniu = sequelize.define(
 );
 
 Domeniu.hasMany(Materie, { foreignKey: 'id_domeniu', onDelete: 'CASCADE' });
+Domeniu.hasMany(Experienta, { foreignKey: 'id_domeniu', onDelete: 'CASCADE' });
 
 module.exports = Domeniu;
