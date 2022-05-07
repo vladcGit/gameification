@@ -43,6 +43,12 @@ export default function Curs() {
       const arr = res.data.Lecties.concat(res.data.Examenes);
       arr.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
       setIntrebariSiExamene(arr);
+
+      await axios.post(
+        '/api/curs_student',
+        { id_curs: id },
+        { headers: { Authorization: localStorage.getItem('token') } }
+      );
     } catch (e) {
       console.log(e);
       const err = e.response;
@@ -221,7 +227,7 @@ export default function Curs() {
             >
               Vezi
             </Button>
-            {user?.eProfesor && (
+            {user?.eProfesor ? (
               <>
                 <Button
                   size='small'
@@ -249,7 +255,7 @@ export default function Curs() {
                   Sterge
                 </Button>
               </>
-            )}
+            ) : null}
           </CardActions>
         </Card>
       </Grid>
@@ -279,37 +285,30 @@ export default function Curs() {
             <Typography>{examen.descriere}</Typography>
           </CardContent>
           <CardActions>
-            {
-              // eslint-disable-next-line
-              user?.eProfesor == false && (
+            {user?.eProfesor ? (
+              <>
                 <Button
                   size='small'
-                  onClick={() => navigate(`/examen/${examen.id}`)}
+                  onClick={() => navigate(`/examen/edit/${examen.id}`)}
                 >
-                  Vezi
+                  Editeaza
                 </Button>
-              )
-            }
-            {
-              // eslint-disable-next-line
-              user?.eProfesor == true && (
-                <>
-                  <Button
-                    size='small'
-                    onClick={() => navigate(`/examen/edit/${examen.id}`)}
-                  >
-                    Editeaza
-                  </Button>
-                  <Button
-                    size='small'
-                    color='secondary'
-                    onClick={() => stergeExamen(examen.id)}
-                  >
-                    Sterge
-                  </Button>
-                </>
-              )
-            }
+                <Button
+                  size='small'
+                  color='secondary'
+                  onClick={() => stergeExamen(examen.id)}
+                >
+                  Sterge
+                </Button>
+              </>
+            ) : (
+              <Button
+                size='small'
+                onClick={() => navigate(`/examen/${examen.id}`)}
+              >
+                Vezi
+              </Button>
+            )}
           </CardActions>
         </Card>
       </Grid>
@@ -356,35 +355,37 @@ export default function Curs() {
                 ></Stack>
               </>
             )}
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                width: '100%',
-              }}
-            >
-              <Button
-                variant='contained'
-                onClick={() => {
-                  setTitluModal('Creeaza o lectie noua');
-                  setTextModal(
-                    'Introdu datele si apoi apasa pe buton. (pentru campul text se pot introduce mai multe linii)'
-                  );
-                  setButtonTextModal('Creeaza');
-                  setOpen(true);
+            {user?.eProfesor ? (
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  width: '100%',
                 }}
               >
-                Creeaza o lectie
-              </Button>
-              <Button
-                variant='contained'
-                sx={{ margin: '20px' }}
-                onClick={() => navigate(`/examen/nou/${id}`)}
-              >
-                Creeaza un test
-              </Button>
-            </div>
+                <Button
+                  variant='contained'
+                  onClick={() => {
+                    setTitluModal('Creeaza o lectie noua');
+                    setTextModal(
+                      'Introdu datele si apoi apasa pe buton. (pentru campul text se pot introduce mai multe linii)'
+                    );
+                    setButtonTextModal('Creeaza');
+                    setOpen(true);
+                  }}
+                >
+                  Creeaza o lectie
+                </Button>
+                <Button
+                  variant='contained'
+                  sx={{ margin: '20px' }}
+                  onClick={() => navigate(`/examen/nou/${id}`)}
+                >
+                  Creeaza un test
+                </Button>
+              </div>
+            ) : null}
           </Container>
         </Box>
 

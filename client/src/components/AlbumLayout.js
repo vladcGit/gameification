@@ -87,7 +87,7 @@ export default function Album(props) {
                       <Button size='small' onClick={() => buttonHandler(card)}>
                         Vezi
                       </Button>
-                      {SecondaryButton && (
+                      {SecondaryButton?.text?.length > 0 && (
                         <Button
                           size='small'
                           color='secondary'

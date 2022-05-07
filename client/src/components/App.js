@@ -18,6 +18,7 @@ import ExamenNou from './ExamenNou';
 import ExamenEdit from './ExamenEdit';
 import Examen from './Examen';
 import ClasamentExamen from './componenteExamen/ClasamentExamen';
+import ProtectedRoute from '../ProtectedRoute';
 
 export default function App() {
   const [mode, setMode] = useState('light');
@@ -67,21 +68,77 @@ export default function App() {
             <Route exact path='/domeniu' element={<Domenii />} />
             <Route exact path='/domeniu/:id' element={<Domeniu />} />
             <Route exact path='/materie/:id' element={<Materie />} />
-            <Route exact path='/curs/nou' element={<CursNou />} />
-            <Route exact path='/curs/edit/:id' element={<CursEdit />} />
-            <Route exact path='/curs/:id' element={<Curs />} />
-            <Route exact path='/examen/:id' element={<Examen />} />
-            <Route exact path='/examen/nou/:id' element={<ExamenNou />} />
-            <Route exact path='/examen/edit/:id' element={<ExamenEdit />} />
+            <Route
+              exact
+              path='/curs/nou'
+              element={
+                <ProtectedRoute>
+                  <CursNou />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              exact
+              path='/curs/edit/:id'
+              element={
+                <ProtectedRoute>
+                  <CursEdit />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              exact
+              path='/curs/:id'
+              element={
+                <ProtectedRoute>
+                  <Curs />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              exact
+              path='/examen/:id'
+              element={
+                <ProtectedRoute>
+                  <Examen />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              exact
+              path='/examen/nou/:id'
+              element={
+                <ProtectedRoute>
+                  <ExamenNou />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              exact
+              path='/examen/edit/:id'
+              element={
+                <ProtectedRoute>
+                  <ExamenEdit />
+                </ProtectedRoute>
+              }
+            />
             <Route
               exact
               path='/examen/:id/clasament'
-              element={<ClasamentExamen />}
+              element={
+                <ProtectedRoute>
+                  <ClasamentExamen />
+                </ProtectedRoute>
+              }
             />
             <Route
               exact
               path='/curs/:id/lectie/:idLectie'
-              element={<Lectie />}
+              element={
+                <ProtectedRoute>
+                  <Lectie />
+                </ProtectedRoute>
+              }
             />
             <Route path='*' element={<Page404 />} />
           </Routes>

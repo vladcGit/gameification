@@ -30,7 +30,7 @@ export default function Lectie() {
       try {
         const token = localStorage.getItem('token');
         if (!token) return;
-        const res = await axios.get(`/api/user/`, {
+        const res = await axios.get(`/api/user`, {
           headers: { Authorization: token },
         });
         setUser(res.data);
@@ -114,7 +114,9 @@ export default function Lectie() {
         style={{ display: 'flex', justifyContent: 'center', width: '100%' }}
         onClick={() => inputRef.current.click()}
       >
-        {user?.eProfesor && <Button variant='contained'>Incarca fisier</Button>}
+        {user?.eProfesor ? (
+          <Button variant='contained'>Incarca fisier</Button>
+        ) : null}
       </div>
     </>
   );

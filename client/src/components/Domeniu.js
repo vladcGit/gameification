@@ -15,8 +15,7 @@ export default function Domeniu() {
       try {
         const resDomeniu = await axios.get(`/api/domeniu/${id}`);
         setDomeniu(resDomeniu.data);
-        const resMaterie = await axios.get('/api/materie/all');
-        const carduri = resMaterie.data.map((materie) => ({
+        const carduri = resDomeniu.data.Materies.map((materie) => ({
           id: materie.id,
           titlu: materie.nume,
           subtitlu: materie.descriere,
