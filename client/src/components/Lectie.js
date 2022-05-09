@@ -65,7 +65,7 @@ export default function Lectie() {
   };
 
   const handleDownloadFile = ({ continut, titlu, tip }) => {
-    const base64 = btoa(
+    const base64 = window.btoa(
       String.fromCharCode.apply(null, new Uint8Array(continut.data))
     );
 

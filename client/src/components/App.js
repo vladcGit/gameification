@@ -18,7 +18,7 @@ import ExamenNou from './ExamenNou';
 import ExamenEdit from './ExamenEdit';
 import Examen from './Examen';
 import ClasamentExamen from './componenteExamen/ClasamentExamen';
-import ProtectedRoute from '../ProtectedRoute';
+import ProtectedRoute from './ProtectedRoute';
 
 export default function App() {
   const [mode, setMode] = useState('light');

@@ -40,7 +40,9 @@ export default function Domenii() {
 
         const domeniiCopie = [...carduri];
         for (let domeniu of domeniiCopie) {
-          const filtrate = resXp.data.filter((xp) => xp.id === domeniu.id);
+          const filtrate = resXp.data.filter(
+            (xp) => xp.id_domeniu === domeniu.id
+          );
           if (filtrate.length === 0) {
             domeniu.subtitlu += ' (Incepator, 0 experienta)';
           } else {

@@ -20,7 +20,10 @@ router.post('/nou', upload.single('file'), async (req, res) => {
       id_lectie,
     });
 
-    fs.rmSync(`${uploadsFolder}\\uploads`, { recursive: true, force: true });
+    // fs.rmSync(`${uploadsFolder}\\uploads`, { recursive: true, force: true });
+    fs.unlink(path, (err) => {
+      if (err) return console.error(err);
+    });
     return res.status(201).json(instanta);
   } catch (e) {
     console.error(e);
