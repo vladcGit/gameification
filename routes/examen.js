@@ -6,6 +6,7 @@ const ExamenStudent = require('../models/examen_student');
 const Experienta = require('../models/experienta');
 const Intrebare = require('../models/intrebare');
 const Materie = require('../models/materie');
+const Utilizator = require('../models/utilizator');
 const Varianta = require('../models/varianta');
 
 const router = require('express').Router();
@@ -133,7 +134,6 @@ router.post('/:id/termina', auth, async (req, res) => {
         id_student: req.user.id,
         id_examen: req.params.id,
         punctaj: numarCorecte,
-        e_platit: false,
         raspunsuri,
       });
     } else await instanta.update({ punctaj: numarCorecte, raspunsuri });
@@ -194,12 +194,10 @@ router.get('/:id/raspunsuri', auth, async (req, res) => {
       });
     }
 
-    return res
-      .status(200)
-      .json({
-        lista,
-        xp: (instanta.getDataValue('punctaj') / intrebari.length) * 100,
-      });
+    return res.status(200).json({
+      lista,
+      xp: (instanta.getDataValue('punctaj') / intrebari.length) * 100,
+    });
   } catch (e) {
     console.log(e);
     res.status(500).json(e);
@@ -224,9 +222,16 @@ router.get('/:id/clasament', auth, async (req, res) => {
     if (data_inceput.getTime() + durata > new Date().getTime())
       return res.status(400).json('Examenul nu s-a terminat inca');
 
+    for (let instanta of instante) {
+      const user = await Utilizator.findByPk(instanta.id_student, {
+        raw: true,
+      });
+      instanta.nume = user.nume;
+      instanta.email = user.email;
+    }
+
     instante = instante.map(
-      ({ id_examen, createdAt, updatedAt, raspunsuri, e_platit, ...rest }) =>
-        rest
+      ({ id_examen, createdAt, updatedAt, raspunsuri, ...rest }) => rest
     );
 
     return res.status(200).json(instante);

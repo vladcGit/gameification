@@ -55,7 +55,13 @@ export default function ClasamentExamen() {
         <Grid item xs={10} mt='20px'>
           {lista && user && (
             <BasicTable
-              columns={['Pozitie', 'Punctaj', 'Id student']}
+              columns={[
+                'Pozitie',
+                'Punctaj',
+                'Id student',
+                'Nume student',
+                'Email student',
+              ]}
               rows={lista}
               highlightColor={secondaryColor}
               predicatHighlight={(row) => row.id_student === user.id}
