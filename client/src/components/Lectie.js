@@ -65,13 +65,10 @@ export default function Lectie() {
   };
 
   const handleDownloadFile = ({ continut, titlu, tip }) => {
-    const base64 = window.btoa(
-      String.fromCharCode.apply(null, new Uint8Array(continut.data))
-    );
+    const file = new Blob([new Uint8Array(continut.data)], { type: tip });
 
     const a = document.createElement('a');
-    //daca nu pun string-ul de la inceput cu base64 si tip nu se descarca
-    a.href = `data:${tip};base64,${base64}`;
+    a.href = URL.createObjectURL(file);
     a.download = titlu;
     a.click();
   };

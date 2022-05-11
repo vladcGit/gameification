@@ -11,7 +11,7 @@ router.post('/nou', upload.single('file'), async (req, res) => {
   try {
     const { path, originalname, mimetype } = req.file;
     const uploadsFolder = pathNode.resolve(__dirname, '..');
-    const caleAbsoluta = `${uploadsFolder}\\${path}`;
+    const caleAbsoluta = pathNode.join(uploadsFolder, path);
     const { id_lectie } = JSON.parse(req.body.json_data);
     const instanta = await Fisier.create({
       continut: fs.readFileSync(caleAbsoluta),

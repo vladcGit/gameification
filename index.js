@@ -17,4 +17,6 @@ app.listen(port, async () => {
 });
 
 app.use(express.static('./client/build'));
-app.get('*', (req, res) => res.sendFile('./client/build/index.html'));
+app.get('*', (req, res) =>
+  res.sendFile('index.html', { root: './client/build' })
+);
