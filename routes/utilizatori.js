@@ -3,6 +3,10 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const auth = require('../middleware/auth');
 const Utilizator = require('../models/utilizator');
+const ExamenStudent = require('../models/examen_student');
+const CursuriStudent = require('../models/cursuri_student');
+const Experienta = require('../models/experienta');
+const Curs = require('../models/curs');
 require('dotenv').config();
 
 const secret = process.env.SECRET || 'secret';
@@ -52,6 +56,30 @@ router.post('/signin', async (req, res) => {
 router.get('/', auth, async (req, res) => {
   try {
     return res.status(200).json(req.user);
+  } catch (e) {
+    console.log(e);
+    return res.status(500).json(e);
+  }
+});
+
+router.get('/profil', auth, async (req, res) => {
+  try {
+    const user = await Utilizator.findByPk(req.user.id, {
+      include: [ExamenStudent, CursuriStudent, Experienta, Curs],
+      attributes: { exclude: ['parola'] },
+    });
+    return res.status(200).json(user);
+  } catch (e) {
+    console.log(e);
+    return res.status(500).json(e);
+  }
+});
+
+router.get('/:id', async (req, res) => {
+  try {
+    const user = await Utilizator.findByPk(req.params.id);
+    if (!user) return res.status(400).json({ eroare: 'nu exista' });
+    return res.status(200).json(user);
   } catch (e) {
     console.log(e);
     return res.status(500).json(e);

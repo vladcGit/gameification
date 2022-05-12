@@ -19,6 +19,7 @@ import { useTheme } from '@emotion/react';
 export default function Curs() {
   const [curs, setCurs] = React.useState(null);
   const [user, setUser] = React.useState(null);
+  const [creator, setCreator] = React.useState(null);
   const [open, setOpen] = React.useState(false);
   const [titluModal, setTitluModal] = React.useState('');
   const [textModal, setTextModal] = React.useState('');
@@ -88,6 +89,24 @@ export default function Curs() {
   React.useEffect(() => {
     fetchCursCallback();
   }, [fetchCursCallback]);
+
+  React.useEffect(() => {
+    const fetchCreator = async () => {
+      try {
+        if (!curs) return;
+        const res = await axios.get(`/api/user/${curs.id_creator}`);
+        console.log(res.data);
+        setCreator(res.data);
+      } catch (e) {
+        console.log(e);
+        const err = e.response;
+        if (err.status === 500) {
+          alert('A aparut o eroare');
+        }
+      }
+    };
+    fetchCreator();
+  }, [curs]);
 
   const creeazaLectie = async () => {
     const token = localStorage.getItem('token');
@@ -345,7 +364,14 @@ export default function Curs() {
                   color='text.secondary'
                   paragraph
                 >
-                  {curs.descriere}
+                  {
+                    <>
+                      <p style={{ marginBottom: '50px' }}>
+                        {creator && creator.nume}
+                      </p>
+                      {curs.descriere}
+                    </>
+                  }
                 </Typography>
                 <Stack
                   sx={{ pt: 4 }}

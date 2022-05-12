@@ -81,7 +81,16 @@ export default function Album(props) {
                       <Typography gutterBottom variant='h5' component='h2'>
                         {card.titlu}
                       </Typography>
-                      <Typography>{card.subtitlu}</Typography>
+                      <Typography component={'span'}>
+                        {card.subtitlu?.split('\n').map((i, key) => {
+                          return (
+                            <>
+                              <p key={key}>{i}</p>
+                              {key === 0 && <br />}
+                            </>
+                          );
+                        })}
+                      </Typography>
                     </CardContent>
                     <CardActions>
                       <Button size='small' onClick={() => buttonHandler(card)}>

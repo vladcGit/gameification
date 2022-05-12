@@ -44,7 +44,7 @@ export default function Domenii() {
             (xp) => xp.id_domeniu === domeniu.id
           );
           if (filtrate.length === 0) {
-            domeniu.subtitlu += ' (Incepator, 0 experienta)';
+            domeniu.subtitlu += '\nIncepator\n0 experienta';
           } else {
             const resPozitieClasament = await axios.get(
               `/api/experienta/domeniu/${domeniu.id}/clasament`,
@@ -54,11 +54,11 @@ export default function Domenii() {
                 },
               }
             );
-            domeniu.subtitlu += ` (${filtrate[0].rank}, ${Math.round(
+            domeniu.subtitlu += `\n${filtrate[0].rank} \n${Math.round(
               filtrate[0].xp
-            )} experienta, locul ${
+            )} experienta \nlocul ${
               resPozitieClasament.data.pozitie
-            } in clasament)`;
+            } in clasament`;
           }
         }
         setDomenii(domeniiCopie);

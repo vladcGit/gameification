@@ -97,7 +97,12 @@ export default function Lectie() {
       />
       {lectie && (
         <Album
-          titlu={lectie.nume}
+          titlu={
+            <>
+              {lectie.nume}
+              <p>- lectie -</p>
+            </>
+          }
           subtitlu={lectie.descriere}
           text={lectie.text}
           cards={lectie.Fisieres}

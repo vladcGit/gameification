@@ -8,6 +8,7 @@ import IconButton from '@mui/material/IconButton';
 import HomeIcon from '@mui/icons-material/Home';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ThemeSwitch from './ThemeSwitch';
 import { useNavigate } from 'react-router-dom';
 
@@ -56,16 +57,29 @@ export default function Appbar() {
               Login
             </Button>
           )}
+
           {localStorage.getItem('token') && (
-            <Button
-              color='inherit'
-              onClick={() => {
-                localStorage.removeItem('token');
-                navigate('/');
-              }}
-            >
-              Logout
-            </Button>
+            <>
+              <IconButton
+                size='large'
+                edge='start'
+                color='inherit'
+                sx={{ mr: 2, ml: 2 }}
+                onClick={() => navigate('/profil')}
+              >
+                <AccountCircleIcon fontSize='large' />
+              </IconButton>
+              <Button
+                color='inherit'
+                onClick={() => {
+                  localStorage.removeItem('token');
+                  if (window.location.pathname !== '/') navigate('/');
+                  else window.location.reload();
+                }}
+              >
+                Logout
+              </Button>
+            </>
           )}
         </Toolbar>
       </AppBar>

@@ -19,6 +19,7 @@ import ExamenEdit from './ExamenEdit';
 import Examen from './Examen';
 import ClasamentExamen from './componenteExamen/ClasamentExamen';
 import ProtectedRoute from './ProtectedRoute';
+import Profil from './Profil';
 
 export default function App() {
   const [mode, setMode] = useState('light');
@@ -68,6 +69,15 @@ export default function App() {
             <Route exact path='/domeniu' element={<Domenii />} />
             <Route exact path='/domeniu/:id' element={<Domeniu />} />
             <Route exact path='/materie/:id' element={<Materie />} />
+            <Route
+              exact
+              path='/profil'
+              element={
+                <ProtectedRoute>
+                  <Profil />
+                </ProtectedRoute>
+              }
+            />
             <Route
               exact
               path='/curs/nou'
