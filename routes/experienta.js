@@ -40,4 +40,15 @@ router.get('/', auth, async (req, res) => {
   }
 });
 
+router.get('/all', auth, async (req, res) => {
+  try {
+    const experienta = await Experienta.findAll();
+    if (!experienta) return res.status(200).json([]);
+    res.status(200).json(experienta);
+  } catch (e) {
+    console.log(e);
+    res.status(500).json(e);
+  }
+});
+
 module.exports = router;

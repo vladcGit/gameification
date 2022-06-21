@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Album from './AlbumLayout';
 import { useParams, useNavigate } from 'react-router-dom';
+import DomeniuClasament from './DomeniuClasament';
 
 export default function Domeniu() {
   const [materii, setMaterii] = useState([]);
@@ -35,11 +36,14 @@ export default function Domeniu() {
     navigate(`/materie/${id}`);
   };
   return (
-    <Album
-      titlu={domeniu.nume}
-      subtitlu='Alege din sfera noastra larga de materii'
-      cards={materii}
-      buttonHandler={buttonHandler}
-    />
+    <>
+      <Album
+        titlu={domeniu.nume}
+        subtitlu='Alege din sfera noastra larga de materii'
+        cards={materii}
+        buttonHandler={buttonHandler}
+      />
+      <DomeniuClasament />
+    </>
   );
 }

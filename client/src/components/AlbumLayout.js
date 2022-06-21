@@ -84,10 +84,10 @@ export default function Album(props) {
                       <Typography component={'span'}>
                         {card.subtitlu?.split('\n').map((i, key) => {
                           return (
-                            <>
-                              <p key={key}>{i}</p>
+                            <React.Fragment key={key}>
+                              <p>{i}</p>
                               {key === 0 && <br />}
-                            </>
+                            </React.Fragment>
                           );
                         })}
                       </Typography>

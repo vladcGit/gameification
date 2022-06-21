@@ -108,7 +108,7 @@ export default function CursEdit() {
               disabled={nume.length === 0 || descriere.length === 0}
               onClick={editCurs}
             >
-              Editeaza
+              Salveaza
             </Button>
           </Grid>
         </Grid>

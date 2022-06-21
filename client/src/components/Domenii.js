@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Album from './AlbumLayout';
 import { useNavigate } from 'react-router-dom';
+import ModalRank from './ModalRank';
 
 export default function Domenii() {
   const [domenii, setDomenii] = useState([]);
@@ -54,9 +55,21 @@ export default function Domenii() {
                 },
               }
             );
-            domeniu.subtitlu += `\n${filtrate[0].rank} \n${Math.round(
-              filtrate[0].xp
-            )} experienta \nlocul ${
+
+            let xpRamas;
+            if (filtrate[0].xp < 200)
+              xpRamas =
+                Number(200 - filtrate[0].xp).toFixed(2) +
+                ' puncte de experienta pana la urmatorul rank';
+            else if (filtrate[0].xp < 500)
+              xpRamas =
+                Number(500 - filtrate[0].xp).toFixed(2) +
+                ' puncte de experienta pana la urmatorul rank';
+            else xpRamas = 'Rank maxim atins';
+
+            domeniu.subtitlu += `\n${
+              filtrate[0].rank
+            } (${xpRamas}) \n${Math.round(filtrate[0].xp)} experienta \nlocul ${
               resPozitieClasament.data.pozitie
             } in clasament`;
           }
@@ -79,11 +92,14 @@ export default function Domenii() {
   };
 
   return (
-    <Album
-      titlu='Domenii'
-      subtitlu='Alege din sfera noastra larga de domenii'
-      cards={domenii}
-      buttonHandler={handler}
-    />
+    <>
+      <Album
+        titlu='Domenii'
+        subtitlu='Alege din sfera noastra larga de domenii'
+        cards={domenii}
+        buttonHandler={handler}
+      />
+      <ModalRank />
+    </>
   );
 }
